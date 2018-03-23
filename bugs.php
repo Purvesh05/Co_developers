@@ -98,15 +98,27 @@
     			<h2 class="text-center">Bugs Found by u</h2>
     			<div class="card">
     				<div class="card-body">
-    						 <?php
+    	 	<?php
+	session_start();
+	if(!isset($_SESSION['rn']) && !isset($_SESSION['eid']) && !isset($_SESSION['uname']))
+	{
+		$result = 403;
+	  	header("Location: result.php?res=$result");
+	}
+	else
+	{		
+		include("db_conn.php");
+		if(!$conn)
+		{
+			$result = 500;
+	  		header("Location: result.php?res=$result");
+		}
 
-session_start();
+		$roll_no = $_SESSION['rn'];
+		$user_name = $_SESSION['uname'];	
+		$user_email = $_SESSION['eid'];
+	
 
-  // For local hosting
-  require('db_conn.php');
-/* 
-    501550 = $_SESSION['rn'];
-    $email = $_SESSION['eid'];*/
 
     $sql="SELECT  *  FROM  bug_reports  where name ='Purvesh' ";
     $result=mysqli_query($conn,$sql);
@@ -120,7 +132,7 @@ session_start();
 		
 		echo "<br>";
 ?>
-  <?php } ?>
+  <?php } } ?>
    
     
       

@@ -99,8 +99,27 @@
    			<h1 class=" text-center">Your Project</h1>
    		
    		
-   		<?php 
-			 require('db_conn.php');
+   		 	<?php
+	session_start();
+	if(!isset($_SESSION['rn']) && !isset($_SESSION['eid']) && !isset($_SESSION['uname']))
+	{
+		$result = 403;
+	  	header("Location: result.php?res=$result");
+	}
+	else
+	{		
+		include("db_conn.php");
+		if(!$conn)
+		{
+			$result = 500;
+	  		header("Location: result.php?res=$result");
+		}
+
+		$roll_no = $_SESSION['rn'];
+		$user_name = $_SESSION['uname'];	
+		$user_email = $_SESSION['eid'];
+	
+
 		  $query = "SELECT * FROM project_requests where name ='hello'";
 		  $result = mysqli_query($conn,$query);
 		$count = mysqli_num_rows($result);

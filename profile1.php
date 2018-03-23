@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -93,17 +94,29 @@
     			</div>
     		</div><!--col-lg-3-->
     		<div class="col-lg-9">
-    		   <?php
+    	<?php
+	session_start();
+	if(!isset($_SESSION['rn']) && !isset($_SESSION['eid']) && !isset($_SESSION['uname']))
+	{
+		$result = 403;
+	  	header("Location: result.php?res=$result");
+	}
+	else
+	{		
+		include("db_conn.php");
+		if(!$conn)
+		{
+			$result = 500;
+	  		header("Location: result.php?res=$result");
+		}
 
-session_start();
+		$roll_no = $_SESSION['rn'];
+		$user_name = $_SESSION['uname'];	
+		$user_email = $_SESSION['eid'];
+	
 
-  // For local hosting
-  require('db_conn.php');
-/* 
-    501550 = $_SESSION['rn'];
-    $email = $_SESSION['eid'];*/
 
-    $sql="SELECT  *  FROM  profiles  where  roll_no=501550";
+    $sql="SELECT  *  FROM  profiles  where  roll_no= ".$roll_no ;
     $result=mysqli_query($conn,$sql);
     $row=mysqli_fetch_array($result);
     $first_name = $row['first_name'];
@@ -128,6 +141,7 @@ session_start();
     $github = $row['github'];
     $linkedin = $row['linkedin'];
   
+	}
 
 
 ?>
@@ -168,7 +182,7 @@ session_start();
             <h4 class="text-center">General</h4>
           </div>
         <div class="row" id="info">
-          <label id="attr" for="roll_no"><h3>Roll No: <b><?=501550?></b></h3></label>
+          <label id="attr" for="roll_no"><h3>Roll No: <b><?=$roll_no?></b></h3></label>
         </div>
         <div class="row" id="info">
 		

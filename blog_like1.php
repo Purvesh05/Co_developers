@@ -201,8 +201,27 @@
     		<div class="col-lg-9">
     	
 
-			<?php
-				include("db_conn.php");
+			 	<?php
+	session_start();
+	if(!isset($_SESSION['rn']) && !isset($_SESSION['eid']) && !isset($_SESSION['uname']))
+	{
+		$result = 403;
+	  	header("Location: result.php?res=$result");
+	}
+	else
+	{		
+		include("db_conn.php");
+		if(!$conn)
+		{
+			$result = 500;
+	  		header("Location: result.php?res=$result");
+		}
+
+		$roll_no = $_SESSION['rn'];
+		$user_name = $_SESSION['uname'];	
+		$user_email = $_SESSION['eid'];
+	
+
 				$sql1 = "Select * from blogs b,blog_likes bl where b.roll_no = bl.user_id group by blog_timestamp desc";
 				$result1 = mysqli_query($conn,$sql1);
 					while($data = mysqli_fetch_array($result1))
@@ -335,9 +354,7 @@
 
 						</div>
 					</div>
-					<?php	
-							     	        		
-						}?>
+					<?php} } ?>
     		   
     		   
 
